@@ -29,7 +29,7 @@ public class UserController {
 
     }
 
-    @RequestMapping("users/{uid}")
+    @GetMapping("users/{uid}")
     public ResponseEntity<User> findById(@PathVariable(value = "uid") String uid,
                                          @RequestAttribute("uid") String curUID)
             throws Exception {

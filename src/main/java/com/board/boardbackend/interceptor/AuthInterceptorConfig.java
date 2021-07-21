@@ -14,7 +14,10 @@ public class AuthInterceptorConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor);
+        registry.addInterceptor(authInterceptor).excludePathPatterns(
+                "/v3/**",
+                "/swagger-ui/**"
+                );
     }
 
 }
