@@ -7,6 +7,8 @@ import com.board.boardbackend.model.Card;
 import com.board.boardbackend.model.User;
 import com.board.boardbackend.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -42,9 +44,10 @@ public class CardService {
         return this.cardRepository.save(card);
     }
 
-    public List<CardResult> getAllCardsInBoard(Long boardID) throws ResourceNotFoundException {
+    public List<CardResult> getAllCardsInBoard(Long boardID, Integer limit, Long curTimestamp) throws ResourceNotFoundException {
         Board board = boardService.getBoardById(boardID);
-
-        return cardRepository.findAllCardsInBoard(boardID);
+        Pageable pageable = PageRequest.of(0, limit);
+        Date curDate = new Date(curTimestamp);
+        return cardRepository.findAllCardsInBoard(boardID, curDate, pageable);
     }
 }

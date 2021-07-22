@@ -32,9 +32,12 @@ public class CardController {
     }
 
     @GetMapping("cards/{boardID}")
-    public List<CardResult> getAllCardsInBoard(@PathVariable(value = "boardID") Long boardID)
+    public List<CardResult> getAllCardsInBoard(@PathVariable(value = "boardID") Long boardID,
+                                               @RequestParam("limit") Integer limit,
+                                               @RequestParam("curTimestamp") Long curTimestamp)
             throws ResourceNotFoundException {
-        return cardService.getAllCardsInBoard(boardID);
+
+        return cardService.getAllCardsInBoard(boardID, limit, curTimestamp);
     }
 
 }

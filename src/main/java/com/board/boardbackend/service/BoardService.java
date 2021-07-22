@@ -6,6 +6,8 @@ import com.board.boardbackend.model.BoardResult;
 import com.board.boardbackend.model.User;
 import com.board.boardbackend.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,14 +33,18 @@ public class BoardService {
     }
 
 
-    public List<Board> getAllBoardsByUser(String uid) throws ResourceNotFoundException{
+    public List<Board> getAllBoardsByUser(String uid, Integer limit, Long curTimestamp) throws ResourceNotFoundException{
         User user = userService.getUserById(uid);
-        final List<Board> boardsByUID = this.boardRepository.findBoardsByUID(uid);
+        Pageable pageable = PageRequest.of(0, limit);
+        Date curDate = new Date(curTimestamp);
+        final List<Board> boardsByUID = this.boardRepository.findBoardsByUID(uid, curDate, pageable);
         return boardsByUID;
     }
 
-    public List<BoardResult> getAllBoards(String uid) {
-        return this.boardRepository.customizedFindAll(uid);
+    public List<BoardResult> getAllBoards(String uid, Integer limit, Long curTimestamp) {
+        Pageable pageable = PageRequest.of(0, limit);
+        Date curDate = new Date(curTimestamp);
+        return this.boardRepository.customizedFindAll(uid, curDate, pageable);
     }
 
     public Board getBoardById(Long id) throws ResourceNotFoundException {
